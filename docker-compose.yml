@@ -1,0 +1,36 @@
+services:
+  # ---------- Backend ----------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend:2.0                 # 4.1. Имя и версия образа
+    container_name: backend_service
+    volumes:
+      # 4.2. data.txt сохраняется вне контейнера (bind mount)
+      - ./data:/app/data
+    networks:
+      - app_network                    # 4.3. Общая сеть
+    expose:
+      - "8000"                         # доступен ТОЛЬКО внутри сети, наружу не проброшен
+    restart: always                    # 4.5. Автоперезапуск
+
+  # ---------- Frontend ----------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend:2.0                # 4.1. Имя и версия образа
+    container_name: frontend_service
+    ports:
+      - "8080:80"                      # наружу открыт только frontend
+    depends_on:
+      - backend                        # 4.4. Зависимость от backend
+    networks:
+      - app_network
+    restart: always
+
+# 4.3. Отдельная пользовательская сеть
+networks:
+  app_network:
+    driver: bridge

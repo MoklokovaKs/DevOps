@@ -1,0 +1,20 @@
+# Данные — не коммитим сами файлы, только структуру папки
+data/*.txt
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Логи
+*.log
